@@ -1,0 +1,30 @@
+services:
+  service1:
+    build: ./service1
+    container_name: serv1
+    command: uvicorn main:app --host 0.0.0.0 --port 80
+    ports:
+    - "8000:80"
+
+  s1_consumer:
+    build: ./service1
+    container_name: s1_consume
+    command: python consumer.py
+  
+  service2:
+    build: ./service2
+    container_name: serv2
+    ports:
+    - "8020:80"
+
+  service3:
+    build: ./service3
+    container_name: serv3
+    command: uvicorn main:app --host 0.0.0.0 --port 80
+    ports:
+    - "8050:80"
+
+  s3_consumer:
+    build: ./service3
+    container_name: s3_consume
+    command: python consumer.py
