@@ -4,7 +4,7 @@ import json
 
 class SendEventMsg(object):
     def __init__(self):
-        self.connection = pika.BlockingConnection(pika.ConnectionParameters(host="host.docker.internal"))
+        self.connection = pika.BlockingConnection(pika.URLParameters("amqp://alvin:Zhiffahmi3310@rabbitserver"))
         self.channel = self.connection.channel()
         result = self.channel.queue_declare(queue="",exclusive=True)
         self.callback_queue = result.method.queue

@@ -2,8 +2,11 @@ import pika
 import json
 from model import User
 from database import session
+import time
 
-connection = pika.BlockingConnection(pika.ConnectionParameters(host='host.docker.internal'))
+time.sleep(100)
+
+connection = pika.BlockingConnection(pika.URLParameters("amqp://alvin:Zhiffahmi3310@rabbitserver"))
 channel = connection.channel()
 channel.queue_declare(queue='service1')
 

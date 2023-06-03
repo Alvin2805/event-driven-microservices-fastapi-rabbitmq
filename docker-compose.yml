@@ -1,21 +1,42 @@
+version: "3.8"
+
 services:
+  rabbitserver:
+    hostname: rabbitservermq
+    image: rabbitmq:3.11-management
+    container_name: rabbitmqserver
+    environment:
+      - RABBITMQ_DEFAULT_USER=alvin
+      - RABBITMQ_DEFAULT_PASS=Zhiffahmi3310
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - dms_network
+
   service1:
     build: ./service1
     container_name: serv1
     command: uvicorn main:app --host 0.0.0.0 --port 80
     ports:
     - "8000:80"
+    networks:
+      - dms_network
 
   s1_consumer:
     build: ./service1
     container_name: s1_consume
     command: python consumer.py
+    networks:
+      - dms_network
   
   service2:
     build: ./service2
     container_name: serv2
     ports:
     - "8020:80"
+    networks:
+      - dms_network
 
   service3:
     build: ./service3
@@ -23,8 +44,16 @@ services:
     command: uvicorn main:app --host 0.0.0.0 --port 80
     ports:
     - "8050:80"
+    networks:
+      - dms_network
 
   s3_consumer:
     build: ./service3
     container_name: s3_consume
     command: python consumer.py
+    networks:
+      - dms_network
+
+networks:
+  dms_network:
+    name: dms_network
